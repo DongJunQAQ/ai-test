@@ -10,7 +10,7 @@ response = client.chat.completions.create(
         {"role": "system", "content": "You are a helpful assistant"},  # 设定模型的角色和行为准则
         {"role": "user", "content": "python如何获取环境变量中的值"},  # 用户的实际问题
     ],
-    temperature=1,
+    temperature=1,  # 控制着模型生成文本时的随机性和创造性程度，通常是0到2之间的浮点数
     stream=False  # 不使用流式响应，会等待模型生成完整回答后一次性返回而不是一个字一个字的生成
 )
 
