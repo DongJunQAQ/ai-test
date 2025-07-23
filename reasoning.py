@@ -6,7 +6,7 @@ from openai import OpenAI
 def reasoning(question):
     client = OpenAI(api_key=os.environ.get("ARK_API_KEY"), base_url="https://ark.cn-beijing.volces.com/api/v3", )
     response = client.chat.completions.create(
-        model="ep-20250723215341-vncq7",  # 指定使用的模型
+        model="ep-20250723215341-vncq7",  # 指定使用的模型，这里使用的是DeepSeek-R1
         messages=[
             {"role": "system", "content": "你是人工智能助手"},  # 设定模型的角色和行为准则
             {"role": "user", "content": question},  # 用户的实际问题
