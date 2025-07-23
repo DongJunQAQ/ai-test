@@ -5,8 +5,9 @@ from PIL import Image
 from openai import OpenAI
 
 
-# 1.使用日志来记录执行步骤，以及日志打印顺序的问题
-# 2.图片在识别处理完成后清理临时文件
+# 1.使用日志来记录执行步骤，以及日志打印顺序的问题；
+# 2.图片在识别处理完成后清理临时文件；
+# 3.多个平台测试os.path.split()和os.path.splitext()的功能；
 
 def encode_image(image_path):  # 读取本地图片文件判断其是否为PNG格式，如果不是则将其转换为PNG格式，最后将图片转化为base64编码
     # 生成PNG输出路径（在原文件名后添加.png后缀）
