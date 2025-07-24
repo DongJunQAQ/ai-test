@@ -7,13 +7,7 @@ from openai import OpenAI
 from general.log import init_log
 
 
-# 2.图片在识别处理完成后清理临时文件；
-
 def encode_image(image_path):  # 读取本地图片文件判断其是否为PNG格式，如果不是则将其转换为PNG格式，最后将图片转化为base64编码
-    # 生成PNG输出路径（在原文件名后添加.png后缀）
-    file_dir, file_name = os.path.split(image_path)  # 获取文件目录和文件名（包括后缀名），os.path.split()将路径分割为目录部分和文件名部分
-    base_file_name, _ = os.path.splitext(file_name)  # 获取不包含后缀的文件名，os.path.splitext()将路径分割为文件名部分和扩展名部分
-    output_path = os.path.join(file_dir, f"{base_file_name}.png")  # 获取转换后缀后的文件路径
     try:
         with Image.open(image_path) as img:
             if img.format != "PNG":
@@ -54,7 +48,17 @@ def image_recognition(image_path, command):  # 图像识别
     return response.choices[0].message.content
 
 
+def del_temp_image(temp_image_path):  # 删除转换格式的临时图片
+    os.remove(temp_image_path)
+    log.info(f"临时文件{temp_image_path}已被删除")
+
+
 if __name__ == "__main__":
     log = init_log()
     local_image_path = "resource/image4.jpg"  # 本地图片路径
+    # 生成PNG输出路径（在原文件名的后缀修改为.png）
+    file_dir, file_name = os.path.split(local_image_path)  # 获取文件目录和文件名（包括后缀名），os.path.split()将路径分割为目录部分和文件名部分
+    base_file_name, _ = os.path.splitext(file_name)  # 获取不包含后缀的文件名，os.path.splitext()将路径分割为文件名部分和扩展名部分
+    output_path = os.path.join(file_dir, f"{base_file_name}.png")  # 获取转换后缀后的文件路径
     print(image_recognition(local_image_path, "描述一下图片"))
+    del_temp_image(output_path)
