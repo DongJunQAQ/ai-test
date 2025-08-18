@@ -8,7 +8,7 @@ def reasoning(question):
     response = client.chat.completions.create(
         model="ep-20250723215341-vncq7",  # 指定使用的模型，这里使用的是DeepSeek-R1
         messages=[
-            {"role": "system", "content": "你是人工智能助手"},  # 设定模型的角色和行为准则
+            {"role": "system", "content": "你是一个程序员智能助手"},  # 设定模型的角色和行为准则
             {"role": "user", "content": question},  # 用户的实际问题
         ],
         temperature=1,  # 控制着模型生成文本时的随机性和创造性程度，通常是0到2之间的浮点数
