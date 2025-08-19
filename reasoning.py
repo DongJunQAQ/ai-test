@@ -1,10 +1,7 @@
-import os
-
-from openai import OpenAI
+from general.keys import client
 
 
 def reasoning(question):
-    client = OpenAI(api_key=os.environ.get("ARK_API_KEY"), base_url="https://ark.cn-beijing.volces.com/api/v3", )
     response = client.chat.completions.create(
         model="ep-20250723215341-vncq7",  # 指定使用的模型，这里使用的是DeepSeek-R1
         messages=[
@@ -16,7 +13,7 @@ def reasoning(question):
         response_format={'type': 'text'},  # 响应结果输出的格式，可选择使用text、json_object、json_schema（推荐）
     )
     process = response.choices[0].message.reasoning_content  # 推理过程
-    results = response.choices[0].message.content  # 推理结果
+    results = response.choices[0].message.content  # 输出结果
     return process, results
 
 
