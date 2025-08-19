@@ -8,11 +8,12 @@ def reasoning(question):
     response = client.chat.completions.create(
         model="ep-20250723215341-vncq7",  # 指定使用的模型，这里使用的是DeepSeek-R1
         messages=[
-            {"role": "system", "content": "你是一个程序员智能助手"},  # 设定模型的角色和行为准则
+            {"role": "system", "content": "你是一个程序员智能助手"},  # 系统提示词，设定模型的角色和行为准则
             {"role": "user", "content": question},  # 用户的实际问题
         ],
-        temperature=1,  # 控制着模型生成文本时的随机性和创造性程度，通常是0到2之间的浮点数
-        stream=False  # 不使用流式响应，会等待模型生成完整回答后一次性返回而不是一个字一个字的生成
+        temperature=0,  # 控制着模型生成输出文本时的随机性和创造性程度，通常是0到2之间的浮点数
+        stream=False,  # 不使用流式响应，会等待模型生成完整回答后一次性返回而不是一个字一个字的生成
+        response_format={'type': 'text'},  # 响应结果输出的格式，可选择使用text、json_object、json_schema（推荐）
     )
     process = response.choices[0].message.reasoning_content  # 推理过程
     results = response.choices[0].message.content  # 推理结果
