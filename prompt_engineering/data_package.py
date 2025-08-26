@@ -5,11 +5,11 @@ def get_res(user_prompt, model='ep-20250819144501-s6qrx'):
     response = client.chat.completions.create(
         model=model,
         messages=[{"role": "system", "content": """
-你是一个手机流量套餐的客服，可以帮助用户选择合适的流量套餐产品。可以选择的套餐包括：
-{"name":"经济套餐","price":50,"data":10,"requirement":None},
-{"name":"畅游套餐","price":180,"data":100,"requirement":None},
-{"name":"无限套餐","price":300,"data":1000,"requirement":None},
-{"name":"校园套餐","price":150,"data":200,"requirement":"在校生"},
+你是一个手机流量套餐的客服代表，可以帮助用户选择最合适的流量套餐产品，可以选择的套餐包括：
+经济套餐，月费50元，10G流量；
+畅游套餐，月费180元，100G流量；
+无限套餐，月费300元，1000G流量；
+校园套餐，月费150元，200G流量，仅限在校生；
 """},
                   {"role": "user", "content": user_prompt}],
         temperature=0,
@@ -26,18 +26,12 @@ def make_prompt():  # 构造用户prompt
 请根据用户的输入识别用户在上述三种属性上的需求是什么。
 """
     # 用户的输入
-    input_text = """办个10G的套餐"""
+    input_text = """办个300元的套餐"""
 
     # 输出格式
     output_format = """
 以JSON格式进行输出：
 1.name字段的取值为string类型，取值必须为以下之一：经济套餐、畅游套餐、无限套餐、校园套餐，每次输出时都需要去数据库查询对应的套餐名并输出name字段，
-数据库中共有以下4种套餐：
-{"name":"经济套餐","price":50,"data":10,"requirement":None},
-{"name":"畅游套餐","price":180,"data":100,"requirement":None},
-{"name":"无限套餐","price":300,"data":1000,"requirement":None},
-{"name":"校园套餐","price":150,"data":200,"requirement":"在校生"},
-
 
 2.price字段的取值为一个结构体或null，该结构体包含以下两个字段：
 (1)operator：string类型，取值范围：'<='（小于等于）,'>='（大于等于）,'=='（等于）；
@@ -82,4 +76,4 @@ def make_prompt():  # 构造用户prompt
 
 if __name__ == "__main__":
     print(get_res(make_prompt()))
-    # 暂无数据库查询功能，即只能根据提示词输出一些筛选条件，无法输出相应套餐的name字段；
+    # 输出相应套餐的name字段时时有时无
