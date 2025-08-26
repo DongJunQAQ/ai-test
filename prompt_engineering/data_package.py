@@ -1,8 +1,11 @@
-from general.keys import client
+import os
+
+from openai import OpenAI
 
 
 def get_res(user_prompt, model='ep-20250819144501-s6qrx'):
-    response = client.chat.completions.create(
+    response = OpenAI(api_key=os.environ.get("ARK_API_KEY"),
+                      base_url="https://ark.cn-beijing.volces.com/api/v3", ).chat.completions.create(
         model=model,
         messages=[{"role": "system", "content": """
 你是一个手机流量套餐的客服代表，可以帮助用户选择最合适的流量套餐产品，可以选择的套餐包括：

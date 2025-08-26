@@ -1,8 +1,11 @@
-from general.keys import client
+import os
+
+from openai import OpenAI
 
 
 def reasoning(question):
-    response = client.chat.completions.create(
+    response = OpenAI(api_key=os.environ.get("ARK_API_KEY"),
+                      base_url="https://ark.cn-beijing.volces.com/api/v3", ).chat.completions.create(
         model="ep-20250723215341-vncq7",  # 指定使用的模型，这里使用的是DeepSeek-R1
         messages=[
             {"role": "system", "content": "你是一个程序员智能助手"},  # 系统提示词，设定模型的角色和行为准则
