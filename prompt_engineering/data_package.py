@@ -79,4 +79,5 @@ def make_prompt():  # 构造用户prompt
 
 if __name__ == "__main__":
     print(get_res(make_prompt()))
-    # 输出相应套餐的name字段时时有时无
+    # 解决输出时name字段时有时无的问题；
+    # 将用户输入改为传参的方式；
