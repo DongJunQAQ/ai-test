@@ -27,7 +27,7 @@ def calling_model(messages):
         tools=[{  # 定义模型可以调用的工具列表，仅支持将函数作为工具
             'type': 'function',
             'function': {
-                'name': 'sum',
+                'name': 'my_sum',
                 'description': '加法器，计算一组数的和',
                 'parameters': {  # 函数参数定义
                     'type': 'object',  # 参数类型为对象
@@ -46,27 +46,33 @@ def calling_model(messages):
     return response.choices[0].message
 
 
+def my_sum(*vals):  # 大模型会自动调用此工具函数来求和
+    total = 0
+    for val in vals:
+        if isinstance(val, list):  # 如果参数是列表，递归处理其中的元素
+            total += my_sum(*val)
+        else:
+            total += val  # 如果不是列表则直接相加即可
+    return total
+
+
 if __name__ == '__main__':
-    # prompt = '告诉我1，2，3，4，5，6，7，8，9，10加起来的总和'
+    prompt = '告诉我1，2，3，4，5，6，7，8，9，10加起来的总和'
     # prompt = "桌上有2个苹果，四个桃子和3本书，还有3个番茄，以及三个傻瓜，一共有几个水果？"  # 使用该prompt时模型不会去调用工具来求和
-    prompt = "1+2+3...+99+100"
+    # prompt = "1+2+3...+99+100"
     my_messages = [{'role': 'system', 'content': '你是一个数学家'},
                    {'role': 'user', 'content': prompt}]
     model_response = calling_model(my_messages)  # 第一次调用模型
     my_messages.append(model_response)  # 将上一步调用模型的响应结果添加至历史会话中
     if model_response.tool_calls is not None:  # 如果返回的是函数工具的调用结果
         tool_call = model_response.tool_calls[0]  # 获取第一个工具调用
-        if tool_call.function.name == 'sum':  # 检查是否调用的是sum函数
+        if tool_call.function.name == 'my_sum':  # 检查是否调用的是my_sum函数
             args = json.loads(tool_call.function.arguments)  # 解析函数调用的参数（JSON字符串转Python字典）
-            result = sum(args['numbers'])  # 将参数求和，注意这里的sum()函数是Python自带的内置函数
-            # 也就是在说虽然我们在工具定义里声明了一个名为sum的函数（其作为模型可调用的工具），但实际执行计算时代码直接使用的是Python内置的sum()函数来处理数据
-            # 即工具列表中的sum是给模型看的"函数描述"，用于告诉模型"有这样一个可以求和的工具"，
-            # 而result = sum(args['numbers'])中调用的是Python自带的求和函数，是实际执行计算的逻辑
-            # 这种设计是将模型的工具调用意图（"我需要调用求和工具"）与具体的实现逻辑（"用Python内置sum函数计算"）对应起来了
+            result = my_sum(args['numbers'])  # 调用工具函数将参数求和
             my_messages.append({  # 将工具调用的结果添加到对话历史中，用以验证是否调用了工具
                 'tool_call_id': tool_call.id,  # 工具调用ID
                 'role': 'tool',
-                'name': 'sum',
+                'name': 'my_sum',
                 'content': str(result)  # 工具返回的结果
             })
             model_response = calling_model(my_messages)  # 第二次调用模型，传入包含工具结果的完整对话历史
