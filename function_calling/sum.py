@@ -72,7 +72,7 @@ if __name__ == '__main__':
             my_messages.append({  # 将工具调用的结果添加到对话历史中，用以验证是否调用了工具
                 'tool_call_id': tool_call.id,  # 工具调用ID
                 'role': 'tool',
-                'name': 'my_sum',
+                'name': tool_call.function.name,  # 工具的名称
                 'content': str(result)  # 工具返回的结果
             })
             model_response = calling_model(my_messages)  # 第二次调用模型，传入包含工具结果的完整对话历史
