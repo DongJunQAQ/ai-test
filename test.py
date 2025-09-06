@@ -1,20 +1,10 @@
-from pydantic import BaseModel, Field
+def nums_sum(n1, n2, *args, a=100, b=200, **kwargs):
+    print(f"n1={n1}")
+    print(f"n2={n2}")
+    print(f"a={a}")
+    print(f"b={b}")
+    print(f"args={args}")
+    print(f"kwargs={kwargs}")
 
 
-class User(BaseModel):
-    name: str
-    age: int = Field(..., gt=0, lt=120)  # 年龄必须大于0且小于120
-    email: str | None = None  # 可选字段
-
-
-# 验证合法数据
-user = User(name="Alice", age=30, email="alice@example.com")
-print(user)
-print(user.name)
-print(user.model_dump_json())  # 转换为JSON字符串
-
-# 验证非法数据（会抛出ValidationError）
-try:
-    User(name="Bob", age=150)
-except Exception as e:
-    print(e)
+nums_sum(1, 2, 3, 4, 5, n3=6, n4=7)
