@@ -12,6 +12,9 @@ python = "^3.11"
 openai = "^1.97.0"
 pillow = "^11.3.0"
 httpx = "^0.28.1"
+langchain-postgres = "^0.0.15"
+langchain-openai = "^0.3.33"
+psycopg = {extras = ["binary"], version = "^3.2.10"}
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
