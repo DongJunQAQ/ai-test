@@ -39,7 +39,7 @@ docs = [  # 测试数据文档
         metadata={"id": 6, "location": "museum", "topic": "art"},
     ),
     Document(
-        page_content="主街上开了一家新的咖啡店",
+        page_content="武汉开了一家新的咖啡店",
         metadata={"id": 7, "location": "Main Street", "topic": "food"},
     ),
     Document(
@@ -61,8 +61,8 @@ for doc in docs:  # 遍历测试文档列表，提取每个文档的id并添加�
     ids.append(doc.metadata["id"])
 vector_store.add_documents(docs, ids=ids)  # 将测试文档和对应的id添加到向量存储数据库中，新向量会覆盖数据库中相同id的旧向量
 # 相似度匹配搜索
-# query = "咖啡店在哪里"
-query = "猫在哪里"
+# query = "哪里有咖啡店"
+query = "池塘里有什么"
 results = vector_store.similarity_search_with_score(query=query, k=5)  # 执行相似性搜索并返回前5个最相似的结果及其相似度分数
 for doc, score in results:  # 遍历搜索结果，打印每个结果的相似度分数、文档内容和元数据
     print(f"* [SIM={score:3f}] {doc.page_content} [{doc.metadata}]")
