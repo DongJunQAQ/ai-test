@@ -6,7 +6,7 @@ from langchain_postgres import PGVector  # 用于与PostgreSQL向量数据库交
 
 os.environ.get("OPENAI_API_KEY")
 os.environ["OPENAI_BASE_URL"] = "https://api.siliconflow.cn/v1"  # 设置环境遍历
-connection = "postgresql+psycopg://postgres:123456@192.168.246.188:5432/rag"
+connection = "postgresql+psycopg://postgres:123456@192.168.246.188:5432/rag"  # 这里指定使用psycopg作为连接数据库的驱动，因此需要安装psycopg[binary]依赖
 vector_store = PGVector(  # 创建PGVector向量存储实例
     embeddings=OpenAIEmbeddings(model="BAAI/bge-m3"),  # 指定使用的嵌入模型
     collection_name="my_rag_docs",  # 文档集合名称，不是数据表的名称
