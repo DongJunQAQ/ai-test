@@ -9,7 +9,7 @@ os.environ["OPENAI_BASE_URL"] = "https://api.siliconflow.cn/v1"  # 设置环境�
 connection = "postgresql+psycopg://postgres:123456@192.168.246.188:5432/rag"  # 这里指定使用psycopg作为连接数据库的驱动，因此需要安装psycopg[binary]依赖
 vector_store = PGVector(  # 创建PGVector向量存储实例
     embeddings=OpenAIEmbeddings(model="BAAI/bge-m3"),  # 指定使用的嵌入模型
-    collection_name="my_rag_docs",  # 文档集合名称，不是数据表的名称
+    collection_name="my_rag_docs",  # 文档集合/数据集名称，不是数据表的名称
     connection=connection,  # 数据库连接
     use_jsonb=True,  # 启用JSONB格式存储元数据
 )
@@ -59,10 +59,10 @@ docs = [  # 测试数据文档
 ids = []  # 用来存储文档ID
 for doc in docs:  # 遍历测试文档列表，提取每个文档的id并添加到列表中
     ids.append(doc.metadata["id"])
-vector_store.add_documents(docs, ids=ids)  # 将测试文档和对应的id添加到向量存储数据库中
+vector_store.add_documents(docs, ids=ids)  # 将测试文档和对应的id添加到向量存储数据库中，新向量会覆盖数据库中相同id的旧向量
 # 相似度匹配搜索
-query = "咖啡店在哪里"
-# query = "猫在哪里"
+# query = "咖啡店在哪里"
+query = "猫在哪里"
 results = vector_store.similarity_search_with_score(query=query, k=5)  # 执行相似性搜索并返回前5个最相似的结果及其相似度分数
 for doc, score in results:  # 遍历搜索结果，打印每个结果的相似度分数、文档内容和元数据
     print(f"* [SIM={score:3f}] {doc.page_content} [{doc.metadata}]")
